@@ -13,7 +13,7 @@ and the parse_address_list returns a list of addresses in a comma separated list
 import email
 import re
 
-__version__ = "0.0.1"
+__version__ = "0.0.2"
 
 
 class MailboxReader():
