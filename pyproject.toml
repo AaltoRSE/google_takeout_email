@@ -23,7 +23,7 @@ test = [
 ]
 
 [project.urls]
-Repository = "github.com/rantahar/google_takeout_email"
+Repository = "https://github.com/rantahar/google_takeout_email"
 
 
 # https://flit.pypa.io/en/latest/upload.html
