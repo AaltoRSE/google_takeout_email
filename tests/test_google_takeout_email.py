@@ -3,7 +3,8 @@ import google_takeout_email
 
 
 def test_MailboxReader():
-    filename = os.path.join("test_data", "test.mbox")
+    test_dir = os.path.dirname(os.path.abspath(__file__))
+    filename = os.path.join(test_dir, "test_data", "test.mbox")
 
     with google_takeout_email.MailboxReader(filename) as mailbox:
         messages = list(mailbox.messages)
