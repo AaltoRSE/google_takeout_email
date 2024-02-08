@@ -13,7 +13,7 @@ and the parse_address_list returns a list of addresses in a comma separated list
 import email
 import re
 
-__version__ = "0.0.2"
+__version__ = "0.0.4"
 
 
 class MailboxReader():
@@ -43,26 +43,30 @@ class MailboxReader():
             email.message.Message: An email message object.
         """
         lines = []
-        while True:
-            line = self.file.readline()
+
+        for line in self.file:
+            if isinstance(line, bytes):
+                if line.startswith(b'From '):
+                    if lines:
+                        message = email.message_from_bytes(b''.join(lines))
+                        yield(message)
+                        lines = [line]
+            else:
+                if line.startswith('From '):
+                    if lines:
+                        message = email.message_from_string(''.join(lines))
+                        yield(message)
+                        lines = [line]
             
-            # decode if written as a byte string
-            try:
-                line = line.decode('ASCII', errors='surrogateescape')
-            except (UnicodeDecodeError, AttributeError):
-                pass
-
-            if line.startswith('From ') or line == '':
-                if lines:
-                    message = email.message_from_string(''.join(lines))
-                    yield(message)
-                
-                if line == '':
-                    break
-                
-                lines = [line]
-
             lines.append(line)
+
+        # Handle last message
+        if lines:
+            if isinstance(lines[0], bytes):
+                message = email.message_from_bytes(b''.join(lines))
+            else:
+                message = email.message_from_string(''.join(lines))
+            yield(message)
 
     def close(self):
         """Closes the file handle."""
@@ -103,4 +107,21 @@ def strip_address(address_string):
         return embedded_emails[0]
     return address_string
 
+
+def extract_content(message):
+    content = ""
+    for part in message.walk():
+        if part.get_content_type() == "text/plain":
+            payload = part.get_payload(decode=True)
+            charset = part.get_content_charset()
+            try:
+                if charset:
+                    content += payload.decode(charset)
+                else:
+                    content += payload.decode()
+            except UnicodeDecodeError:
+                # Failed to decode the string. Could use charder
+                pass
+            
+    return content
 
