@@ -11,6 +11,8 @@ version = "0.0.5"
 authors = [{name = "Jarno Rantaharju", email="jarno.rantaharju@aalto.fi"}]
 readme = "README.md"
 license = {file = "LICENSE"}
+description = "Contains a reader for mailbox files, MailboxReader, and utility functions for parsing
+email addresses."
 
 # https://pypi.org/classifiers/
 classifiers = ["License :: OSI Approved :: MIT License"]
