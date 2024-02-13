@@ -7,6 +7,7 @@ name = "google_takeout_email"
 
 [project]
 name = "google_takeout_email"
+version = "0.0.5"
 authors = [{name = "Jarno Rantaharju", email="jarno.rantaharju@aalto.fi"}]
 readme = "README.md"
 license = {file = "LICENSE"}
@@ -15,6 +16,7 @@ license = {file = "LICENSE"}
 classifiers = ["License :: OSI Approved :: MIT License"]
 dynamic = ["version", "description"]
 dependencies = [
+    "chardet",
 ]
 
 [project.optional-dependencies]

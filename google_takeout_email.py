@@ -12,6 +12,7 @@ and the parse_address_list returns a list of addresses in a comma separated list
 
 import email
 import re
+import chardet
 
 __version__ = "0.0.4"
 
@@ -120,8 +121,10 @@ def extract_content(message):
                 else:
                     content += payload.decode()
             except UnicodeDecodeError:
-                # Failed to decode the string. Could use charder
-                pass
+                # Failed to decode the string. Could use chardet
+                # If this fails, allow the exception to propagate
+                charset = chardet.detect(payload)["encoding"]
+                content += payload.decode(charset)
             
     return content
 
